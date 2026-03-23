@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حجز استشارة — د. ماجد الفرشوطي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Tajawal’, sans-serif;
+background: #fff;
+color: #1a1a1a;
+min-height: 100vh;
+}
+
+.wrap {
+max-width: 540px;
+margin: 0 auto;
+padding: 56px 24px 80px;
+}
+
+.dr-name {
+font-size: 15px;
+font-weight: 500;
+color: #0a7a6e;
+margin-bottom: 12px;
+}
+
+h1 {
+font-size: 34px;
+font-weight: 800;
+line-height: 1.3;
+color: #1a1a1a;
+margin-bottom: 14px;
+}
+
+.sub {
+font-size: 17px;
+color: #888;
+line-height: 1.7;
+margin-bottom: 44px;
+}
+
+.line {
+height: 1px;
+background: #f0f0f0;
+margin: 32px 0;
+}
+
+.field { margin-bottom: 28px; }
+
+.lbl {
+display: block;
+font-size: 17px;
+font-weight: 700;
+color: #1a1a1a;
+margin-bottom: 10px;
+}
+
+.lbl-note {
+font-size: 14px;
+font-weight: 400;
+color: #aaa;
+margin-right: 6px;
+}
+
+input[type=“text”], input[type=“tel”] {
+width: 100%;
+padding: 16px 18px;
+border: 1.5px solid #e8e8e8;
+border-radius: 14px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 17px;
+color: #1a1a1a;
+background: #fafafa;
+outline: none;
+transition: border-color 0.2s, background 0.2s;
+direction: rtl;
+}
+
+input[type=“text”]:focus, input[type=“tel”]:focus {
+border-color: #0a7a6e;
+background: #fff;
+}
+
+input::placeholder { color: #ccc; }
+
+.options {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+}
+
+.opt {
+display: flex;
+align-items: center;
+gap: 10px;
+border: 1.5px solid #e8e8e8;
+border-radius: 12px;
+padding: 14px 16px;
+cursor: pointer;
+font-size: 16px;
+color: #444;
+transition: border-color 0.15s, background 0.15s, color 0.15s;
+user-select: none;
+background: #fafafa;
+}
+
+.opt:has(input:checked) {
+border-color: #0a7a6e;
+background: #f0faf9;
+color: #0a7a6e;
+font-weight: 700;
+}
+
+.opt input {
+width: 18px;
+height: 18px;
+accent-color: #0a7a6e;
+flex-shrink: 0;
+cursor: pointer;
+}
+
+.consent {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+cursor: pointer;
+padding: 18px;
+border: 1.5px solid #e8e8e8;
+border-radius: 14px;
+background: #fafafa;
+transition: border-color 0.15s;
+}
+
+.consent:has(input:checked) { border-color: #0a7a6e; background: #f0faf9; }
+
+.consent input {
+width: 20px;
+height: 20px;
+margin-top: 2px;
+accent-color: #0a7a6e;
+flex-shrink: 0;
+cursor: pointer;
+}
+
+.consent-txt {
+font-size: 16px;
+line-height: 1.7;
+color: #555;
+}
+
+.err {
+display: none;
+font-size: 13px;
+color: #e74c3c;
+margin-top: 7px;
+font-weight: 500;
+}
+.field-error input { border-color: #e74c3c !important; }
+.field-error .consent { border-color: #e74c3c !important; }
+.field-error .err { display: block; }
+
+.btn {
+width: 100%;
+padding: 18px;
+background: #0a7a6e;
+color: #fff;
+border: none;
+border-radius: 14px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 18px;
+font-weight: 700;
+cursor: pointer;
+margin-top: 12px;
+transition: background 0.2s;
+}
+
+.btn:hover { background: #0d9e8f; }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.counter {
+text-align: center;
+margin-top: 36px;
+padding: 24px;
+border: 1.5px solid #f0f0f0;
+border-radius: 16px;
+}
+
+.counter-num {
+font-size: 44px;
+font-weight: 800;
+color: #0a7a6e;
+display: block;
+line-height: 1;
+margin-bottom: 8px;
+}
+
+.counter-lbl { font-size: 16px; color: #aaa; }
+
+.success {
+display: none;
+text-align: center;
+padding: 40px 0;
+}
+
+.success-icon {
+width: 80px;
+height: 80px;
+background: #0a7a6e;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 auto 24px;
+font-size: 34px;
+color: #fff;
+}
+
+.success h2 { font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+.success p { font-size: 17px; color: #888; line-height: 1.8; }
+
+.spinner {
+display: inline-block;
+width: 18px; height: 18px;
+border: 2.5px solid rgba(255,255,255,0.4);
+border-top-color: #fff;
+border-radius: 50%;
+animation: spin 0.7s linear infinite;
+vertical-align: middle;
+margin-left: 8px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 480px) {
+h1 { font-size: 28px; }
+.wrap { padding: 40px 20px 70px; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <div class="dr-name">د. ماجد الفرشوطي — طب الأسرة / طب نمط الحياة</div>
+  <h1>سجّل اهتمامك<br>بحجز استشارة</h1>
+  <p class="sub">العيادة ستُفتتح قريبًا. سجّل بياناتك وسنتواصل معك فور بدء الحجز.</p>
+
+  <div id="formSection">
+
+```
+<div class="field" id="field-name">
+  <span class="lbl">الاسم الكامل</span>
+  <input type="text" id="inp-name" placeholder="اكتب اسمك هنا" />
+  <div class="err">الرجاء إدخال الاسم</div>
+</div>
+
+<div class="field" id="field-phone">
+  <span class="lbl">رقم الجوال <span class="lbl-note">واتساب</span></span>
+  <input type="tel" id="inp-phone" placeholder="05xxxxxxxx" />
+  <div class="err">الرجاء إدخال رقم جوال صحيح</div>
+</div>
+
+<div class="field">
+  <span class="lbl">الإيميل</span>
+  <input type="text" id="inp-email" placeholder="example@email.com" style="direction:ltr;text-align:right;" />
+</div>
+
+<div class="field" id="field-city">
+  <span class="lbl">المدينة</span>
+  <input type="text" id="inp-city" placeholder="الرياض، جدة، الدمام..." />
+  <div class="err">الرجاء إدخال المدينة</div>
+</div>
+
+<div class="line"></div>
+
+<div class="field">
+  <span class="lbl">سبب المراجعة <span class="lbl-note">اختياري</span></span>
+  <div class="options">
+    <label class="opt"><input type="checkbox" name="reason" value="كوليسترول / دهون"> كوليسترول / دهون</label>
+    
+    <label class="opt"><input type="checkbox" name="reason" value="سكري / ضغط الدم"> سكري / ضغط الدم</label>
+    <label class="opt"><input type="checkbox" name="reason" value="متابعة عامة"> متابعة عامة</label>
+    <label class="opt"><input type="checkbox" name="reason" value="نمط حياة"> نمط حياة</label>
+    <label class="opt"><input type="checkbox" name="reason" value="سمنة"> سمنة</label>
+    <label class="opt"><input type="checkbox" name="reason" value="غير ذلك"> غير ذلك</label>
+  </div>
+</div>
+
+<div class="field">
+  <span class="lbl">كيف وصلت إليّ؟ <span class="lbl-note">اختياري</span></span>
+  <div class="options">
+    <label class="opt"><input type="radio" name="source" value="تيك توك"> تيك توك</label>
+    <label class="opt"><input type="radio" name="source" value="انستغرام"> انستغرام</label>
+    <label class="opt"><input type="radio" name="source" value="تويتر / X"> تويتر / X</label>
+    <label class="opt"><input type="radio" name="source" value="توصية شخصية"> توصية شخصية</label>
+  </div>
+</div>
+
+<div class="line"></div>
+
+<div class="field" id="field-consent">
+  <label class="consent">
+    <input type="checkbox" id="inp-consent" />
+    <span class="consent-txt">أوافق على التواصل معي لاحقًا عند فتح العيادة لإبلاغي بموعد بدء الحجز.</span>
+  </label>
+  <div class="err">الموافقة مطلوبة للمتابعة</div>
+</div>
+
+<button class="btn" id="btnSubmit" onclick="submitForm()">سجّل الآن</button>
+```
+
+  </div>
+
+  <div class="success" id="successSection">
+    <div class="success-icon">✓</div>
+    <h2>تم التسجيل!</h2>
+    <p>سنتواصل معك على واتساب<br>فور انطلاق الحجز بإذن الله 🤍</p>
+  </div>
+
+  <div class="counter">
+    <span class="counter-num" id="counterNum">—</span>
+    <span class="counter-lbl">شخص سجّل اهتمامه حتى الآن</span>
+  </div>
+
+</div>
+
+<script>
+const FORMSPREE_URL = 'https://formspree.io/f/xlgpylgk';
+const BASE_COUNT = 99;
+
+function getLocalCount() {
+  return parseInt(localStorage.getItem('dr_majed_count') || '0');
+}
+function incrementCount() {
+  const n = getLocalCount() + 1;
+  localStorage.setItem('dr_majed_count', n);
+  return n;
+}
+function updateCounter() {
+  document.getElementById('counterNum').textContent = BASE_COUNT + getLocalCount();
+}
+
+function validate() {
+  let valid = true;
+  ['field-name','field-phone','field-email','field-city','field-consent'].forEach(id =>
+    document.getElementById(id).classList.remove('field-error'));
+  if (!document.getElementById('inp-name').value.trim()) {
+    document.getElementById('field-name').classList.add('field-error'); valid = false;
+  }
+  const ph = document.getElementById('inp-phone').value.trim().replace(/\s/g,'');
+  if (!ph || ph.length < 9) {
+    document.getElementById('field-phone').classList.add('field-error'); valid = false;
+  }
+  const em = document.getElementById('inp-email').value.trim();
+  if (!em || !em.includes('@')) {
+    document.getElementById('field-email').classList.add('field-error'); valid = false;
+  }
+  if (!document.getElementById('inp-city').value.trim()) {
+    document.getElementById('field-city').classList.add('field-error'); valid = false;
+  }
+  if (!document.getElementById('inp-consent').checked) {
+    document.getElementById('field-consent').classList.add('field-error'); valid = false;
+  }
+  return valid;
+}
+
+async function submitForm() {
+  if (!validate()) return;
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.innerHTML = 'جاري التسجيل <span class="spinner"></span>';
+
+  const reasons = [...document.querySelectorAll('input[name="reason"]:checked')].map(c => c.value);
+  const source  = document.querySelector('input[name="source"]:checked');
+
+  const data = {
+    name:    document.getElementById('inp-name').value.trim(),
+    phone:   document.getElementById('inp-phone').value.trim(),
+    city:    document.getElementById('inp-city').value.trim(),
+    email:   document.getElementById('inp-email').value.trim() || 'لم يُحدَّد',
+    reasons: reasons.join(' / ') || 'لم يُحدَّد',
+    source:  source ? source.value : 'لم يُحدَّد',
+    date:    new Date().toLocaleDateString('ar-SA'),
+    time:    new Date().toLocaleTimeString('ar-SA', { hour:'2-digit', minute:'2-digit' }),
+  };
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error();
+    incrementCount();
+    updateCounter();
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('successSection').style.display = 'block';
+  } catch {
+    btn.disabled = false;
+    btn.innerHTML = 'سجّل الآن';
+    alert('حدث خطأ في الإرسال، حاول مرة أخرى');
+  }
+}
+
+updateCounter();
+</script>
+
+</body>
+</html>
